@@ -313,7 +313,9 @@ def minify(src):
                     src += ';'
                 else:
                     src += ';;'
-            elif it.getNextCharacter() != "" and it.getPreviousCharacter() not in (";", '|', ')'):
+            elif it.getNextCharacter() != "" and it.getPreviousCharacter() == ')' and it.getPreviousCharacters(2) != '))' and it.getNextCharacter() != '}':
+                continue
+            elif it.getNextCharacter() != "" and it.getPreviousCharacter() not in (";", '|'):
                 src += ";"
 
     # Workaround for issue where ;; is on a standalone line
