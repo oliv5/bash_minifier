@@ -324,15 +324,17 @@ def minify(src):
     # finally: remove spaces around semicolons and pipes and other delimiters
     it = BashFileIterator(src)
     src = ""  # result
-    other_delimiters = ('|', '&', ';', '<', '>', '(', ')')  # characters that may not be surrounded by whitespaces
+    # ~ other_delimiters = ('|', '&', ';', '<', '>', '(', ')')  # characters that may not be surrounded by whitespaces
+    other_delimiters = ('|', '&', ';', '<', '>', '(')  # characters that may not be surrounded by whitespaces
     for ch in it.charactersGenerator():
         if it.isInsideGroupWhereWhitespacesCannotBeTruncated():
             src += ch
         elif ch in (' ', '\t') \
                 and (it.getPreviousCharacter() in other_delimiters or
-                             it.getNextCharacter() in other_delimiters) \
+                     it.getNextCharacter() in other_delimiters or
+                     it.getPreviousCharacters(2) in ('()',)) \
                 and it.getNextCharacters(2) not in ('<(', '>('):  # process substitution
-                                                                    # see test t_process_substitution.sh for details
+                                                                  # see test t_process_substitution.sh for details
             continue
         else:
             src += ch
