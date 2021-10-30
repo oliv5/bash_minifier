@@ -21,3 +21,16 @@ esac
   in
      *) echo everything\;;
    esac
+
+
+  case "e" in
+    1) return 0
+        ;;
+   esac
+
+case "e" in
+    1)
+      return 0
+      ;;
+   esac
+

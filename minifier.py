@@ -313,8 +313,11 @@ def minify(src):
                     src += ';'
                 else:
                     src += ';;'
-            elif it.getNextCharacter() != "" and it.getPreviousCharacter() not in (";", '|'):
+            elif it.getNextCharacter() != "" and it.getPreviousCharacter() not in (";", '|', ')'):
                 src += ";"
+
+    # Workaround for issue where ;; is on a standalone line
+    import re; src = re.sub( r";{3,}", ";;", src);
 
     # finally: remove spaces around semicolons and pipes and other delimiters
     it = BashFileIterator(src)
