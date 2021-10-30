@@ -298,14 +298,14 @@ def minify(src):
         else:
             prevWord = it.getPreviousWord()
             nextWord = it.getNextWord()
-            if it.getNextCharacter() == '{':  # functions declaration, see test t8.sh
+            if it.getNextCharacter() == '{' and it.getPreviousCharacters(2) == "()":  # functions declaration, see test t8.sh
                 if it.getPreviousCharacter() == ')':
                     continue
                 else:
                     src += ' '
             elif prevWord in ("until", "while", "then", "do", "else", "in", "elif", "if") or \
                             nextWord in ("in",) or \
-                            it.getPreviousCharacter() in ("{", "(") or \
+                            it.getPreviousCharacter() in ("{", "(", "&") or \
                             it.getPreviousCharacters(2) in ("&&", "||"):
                 src += " "
             elif nextWord in ("esac",) and it.getPreviousCharacters(2) != ';;':
